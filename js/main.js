@@ -12,11 +12,6 @@
  * - Filtrera antal kanaler som visas
  */
 
-/*  Delar till ej obligatorisk funktionalitet, som kan ge poäng för högre betyg
-*   Radera rader för funktioner du vill visa på webbsidan. */
-// document.getElementById("player").style.display = "none";      // Raderad för att visa musikspelare
-// document.getElementById("shownumrows").style.display = "none"; // Raderad för att visa antal träffar
-
 /* ========== KONSTANTER OCH GLOBALA VARIABLER ========== */
 
 // API-basadress för Sveriges Radio - VIKTIGT: Använd HTTPS!
@@ -38,7 +33,7 @@ let currentAudio = null;       // Referens till nuvarande audio-element för upp
 
 /**
  * Hämtar kanaler från Sveriges Radios API
- * Denna funktion gör ett asynkront anrop till API:et och hämtar en lista med radiokanaler
+ * Denna funktion gör ett anrop till API:et och hämtar en lista med radiokanaler
  * baserat på användarens val av antal kanaler.
  */
 async function fetchChannels() {
@@ -115,8 +110,8 @@ async function fetchChannels() {
 
 /**
  * Hämtar programtablå för en specifik kanal
- * @param {number} channelId - ID för den valda kanalen
- * @param {string} channelName - Namnet på den valda kanalen
+ * {number} channelId - ID för den valda kanalen
+ * {string} channelName - Namnet på den valda kanalen
  */
 async function fetchSchedule(channelId, channelName) {
     try {
@@ -181,7 +176,7 @@ async function fetchSchedule(channelId, channelName) {
 /**
  * Visar kanaler i navigationsmenyn
  * Skapar list-element för varje kanal med title-attribut och click-event
- * @param {Array} channels - Array med kanalobjekt från API:et
+ * {Array} channels - Array med kanalobjekt från API:et
  */
 function displayChannels(channels) {
     // Töm befintligt innehåll i listan
@@ -195,7 +190,7 @@ function displayChannels(channels) {
         const li = document.createElement("li");
         li.textContent = channel.name;
         
-        // Lägg till title-attribut för "mouse over"-information (OBLIGATORISK FUNKTIONALITET)
+        // Lägg till title-attribut för "mouse over"-information
         // Visar kanalnamn och tagline när användaren håller muspekaren över
         const titleText = channel.tagline ? 
             `${channel.name} - ${channel.tagline}` : 
@@ -231,9 +226,9 @@ function displayChannels(channels) {
 /**
  * Visar programtablå för vald kanal i info-området
  * Formaterar varje program med article, h3, h4, h5 och p-taggar enligt specifikation
- * @param {Array} scheduleItems - Array med program från API:et
- * @param {string} channelName - Namnet på kanalen
- * @param {string} dateString - Datumet för programtablån
+ * {Array} scheduleItems - Array med program från API:et
+ * {string} channelName - Namnet på kanalen
+ * {string} dateString - Datumet för programtablån
  */
 function displaySchedule(scheduleItems, channelName, dateString) {
     // Töm info-området
@@ -368,9 +363,9 @@ function displaySchedule(scheduleItems, channelName, dateString) {
 
 /**
  * Sorterar programtablå så att aktuellt/kommande program visas först
- * @param {Array} scheduleItems - Array med program
- * @param {Date} currentTime - Nuvarande tid
- * @returns {Array} Sorterad array
+ * {Array} scheduleItems - Array med program
+ * {Date} currentTime - Nuvarande tid
+ * {Array} Sorterad array
  */
 function sortScheduleByCurrentTime(scheduleItems, currentTime) {
     // Hitta index för aktuellt eller nästa program
@@ -415,7 +410,7 @@ function sortScheduleByCurrentTime(scheduleItems, currentTime) {
 
 /**
  * Parsear datum från /Date()/ format eller ISO-sträng
- * @param {string} dateString - Datum i något format
+ * {string} dateString - Datum i något format
  * @returns {Date|null} Parsed datum eller null
  */
 function parseDate(dateString) {
@@ -438,9 +433,9 @@ function parseDate(dateString) {
 }
 
 /**
- * Populerar dropdown-menyn med kanaler för radiospelar-funktionen (VALFRI FUNKTIONALITET)
+ * Populerar dropdown-menyn med kanaler för radiospelar-funktionen
  * Endast kanaler med live-audio läggs till
- * @param {Array} channels - Array med kanalobjekt
+ * {Array} channels - Array med kanalobjekt
  */
 function populateChannelDropdown(channels) {
     // Töm dropdown-menyn
@@ -469,7 +464,7 @@ function populateChannelDropdown(channels) {
 
 /**
  * Formaterar en UTC-tid till svenskt tidsformat (HH:MM)
- * @param {string|number} utcTime - Tid i UTC-format eller Unix timestamp
+ * {string|number} utcTime - Tid i UTC-format eller Unix timestamp
  * @returns {string} Formaterad tid (HH:MM)
  */
 function formatTime(utcTime) {
@@ -522,13 +517,13 @@ function formatTime(utcTime) {
 
 /**
  * Visar felmeddelande i info-området
- * @param {string} message - Felmeddelande som ska visas
+ * {string} message - Felmeddelande som ska visas
  */
 function showError(message) {
     infoDiv.innerHTML = `<p class="error">${message}</p>`;
 }
 
-/* ========== RADIOSPELAR-FUNKTIONER (VALFRI FUNKTIONALITET) ========== */
+/* ========== RADIOSPELAR-FUNKTIONER ========== */
 
 /**
  * Spelar upp vald radiokanal i ett audio-element
@@ -599,7 +594,7 @@ function playRadioChannel() {
         check.forEach(a => a.remove());
     }
     
-    // Skapa nytt audio-element (utan setTimeout först för att se om det hjälper)
+    // Skapa nytt audio-element 
     console.log(`Skapar nytt audio-element för ${channelName}...`);
     
     const audio = document.createElement("audio");
@@ -661,7 +656,7 @@ numRowsInput.addEventListener("keypress", (event) => {
 });
 
 /**
- * Event listener för play-knappen (VALFRI FUNKTIONALITET)
+ * Event listener för play-knappen
  * Startar uppspelning av vald radiokanal
  */
 playButton.addEventListener("click", () => {
@@ -686,3 +681,4 @@ window.addEventListener("DOMContentLoaded", () => {
     // Hämta kanaler när sidan laddas
     fetchChannels();
 });
+
